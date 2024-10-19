@@ -1,13 +1,11 @@
 const { default: mongoose } = require('mongoose');
+// require('dotenv').config();
 
 mongoose
-  .connect(
-    'mongodb+srv://dpanchori94:4rmU1eXdpmM2Linv@cluster0.pgvrrji.mongodb.net/course',
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log('Database connected'))
   .catch((err) => console.error('Connection error', err));
 

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 const userMiddleware = require('../middleware/user');
-const { user } = require('../db');
+const { user, course } = require('../db');
 
 router.post('/signUp', async (req, res) => {
   const username = req.body.username;
@@ -15,22 +15,23 @@ router.post('/signUp', async (req, res) => {
   });
 });
 
-router.get('/course', async (req, res) => {
+router.get('/course', userMiddleware, async (req, res) => {
   const response = await course.find({});
   res.json({ response });
 });
 
-router.get('/course/:courseId', async (req, res) => {
+router.get('/course/:courseId', userMiddleware, async (req, res) => {
   const courseId = req.params.courseId;
   const username = req.headers.username;
-  user.updateOne(
-    { username },
+  const value = await user.updateOne(
+    { username: username },
     {
-      purchase: {
-        $push: courseId,
+      $push: {
+        purchase: courseId,
       },
     }
   );
+  res.json({ msg: 'added course' });
 });
 
 module.exports = router;
