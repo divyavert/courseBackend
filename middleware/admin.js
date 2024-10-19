@@ -8,7 +8,6 @@ async function adminMiddleware(req, res, next) {
     username,
     password,
   });
-  console.log({ value });
   if (value) {
     next();
   } else {
