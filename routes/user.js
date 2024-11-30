@@ -34,4 +34,19 @@ router.get('/course/:courseId', userMiddleware, async (req, res) => {
   res.json({ msg: 'added course' });
 });
 
+router.get('/purchased', userMiddleware, async (req, res) => {
+  const username = req.headers.username;
+  const fetchedUser = await user.findOne({ username });
+
+  const coursesId = fetchedUser.purchase;
+
+  const courseDetails = await course.find({
+    _id: {
+      $in: coursesId,
+    },
+  });
+
+  res.json({ courseDetails });
+});
+
 module.exports = router;
